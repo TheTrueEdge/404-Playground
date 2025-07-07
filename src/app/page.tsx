@@ -1,7 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import GlassRingScene from "@/ui/GlassRingScene";
+import GlassRingScene from "@/components/ui/GlassRingScene";
+import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import Link from "next/link";
 
 export default function Home() {
   const [, setPointerPos] = useState<{ x: number; y: number } | null>(null);
@@ -28,7 +30,7 @@ export default function Home() {
   return (
   <main className="relative min-h-screen bg-black text-white overflow-hidden flex flex-col items-center justify-center px-6 py-20">
     <div
-      className="absolute inset-0 z-0 flex items-center justify-center opacity-100"
+      className="w-full flex items-center justify-center opacity-100"
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
       onTouchMove={handleTouchMove}
@@ -50,7 +52,95 @@ export default function Home() {
       {/* Interactive scene */}
       <GlassRingScene />
     </div>
-    {/* Your other content */}
+    <div className="w-full max-w-6xl mx-auto mt-12 grid grid-cols-3 gap-6 p-6">
+        <Link href="/ai-poetry" className="group">
+          <Card className="group bg-[#0a1931]/80 border-4 border-[#00fff7]/20 shadow-lg hover:border-[#00fff7]/60 transition-all cursor-pointer">
+            <CardHeader>
+              <CardTitle
+                className="
+                  text-white
+                  transition-all
+                  group-hover:text-[#00fff7]/120
+                "
+              >
+                🧠 AI Poetry
+              </CardTitle>
+              <CardDescription>Write weird haikus</CardDescription>
+            </CardHeader>
+          </Card>
+        </Link>
+        <Card className="group bg-[#0a1931]/80 border-4 border-[#00fff7]/20 shadow-lg hover:border-[#00fff7]/60 transition-all cursor-pointer">
+          <CardHeader>
+            <CardTitle
+              className="
+                text-white
+                transition-all
+                group-hover:text-[#00fff7]/120
+              "
+            >
+              Work in Progress
+            </CardTitle>
+            <CardDescription></CardDescription>
+          </CardHeader>
+        </Card>
+        <Card className="group bg-[#0a1931]/80 border-4 border-[#00fff7]/20 shadow-lg hover:border-[#00fff7]/60 transition-all cursor-pointer">
+          <CardHeader>
+            <CardTitle
+              className="
+                text-white
+                transition-all
+                group-hover:text-[#00fff7]/120
+              "
+            >
+              Work in Progress
+            </CardTitle>
+            <CardDescription></CardDescription>
+          </CardHeader>
+        </Card>
+        <Card className="group bg-[#0a1931]/80 border-4 border-[#00fff7]/20 shadow-lg hover:border-[#00fff7]/60 transition-all cursor-pointer">
+          <CardHeader>
+            <CardTitle
+              className="
+                text-white
+                transition-all
+                group-hover:text-[#00fff7]/120
+              "
+            >
+              Work in Progress
+            </CardTitle>
+            <CardDescription></CardDescription>
+          </CardHeader>
+        </Card>
+        <Card className="group bg-[#0a1931]/80 border-4 border-[#00fff7]/20 shadow-lg hover:border-[#00fff7]/60 transition-all cursor-pointer">
+          <CardHeader>
+            <CardTitle
+              className="
+                text-white
+                transition-all
+                group-hover:text-[#00fff7]/120
+              "
+            >
+              Work in Progress
+            </CardTitle>
+            <CardDescription></CardDescription>
+          </CardHeader>
+        </Card>
+        <Card className="group bg-[#0a1931]/80 border-4 border-[#00fff7]/20 shadow-lg hover:border-[#00fff7]/60 transition-all cursor-pointer">
+          <CardHeader>
+            <CardTitle
+              className="
+                text-white
+                transition-all
+                group-hover:text-[#00fff7]/120
+              "
+            >
+              Work in Progress
+            </CardTitle>
+            <CardDescription></CardDescription>
+          </CardHeader>
+        </Card>
+        {/* Add more tiles here as you go */}
+      </div>
   </main>
 );
 }
