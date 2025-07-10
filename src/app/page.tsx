@@ -53,7 +53,7 @@ export default function Home() {
       <GlassRingScene />
     </div>
     <div className="w-full max-w-6xl mx-auto mt-12 grid grid-cols-3 gap-6 p-6">
-        <Link href="/ai-poetry" className="group">
+        <Link href="/troll-battle-simulator" className="group">
           <Card className="group bg-[#0a1931]/80 border-4 border-[#00fff7]/20 shadow-lg hover:border-[#00fff7]/60 transition-all cursor-pointer">
             <CardHeader>
               <CardTitle
@@ -63,9 +63,9 @@ export default function Home() {
                   group-hover:text-[#00fff7]/120
                 "
               >
-                🧠 AI Poetry
+                ⚔️ Troll Battle Simulator
               </CardTitle>
-              <CardDescription>Write weird haikus</CardDescription>
+              <CardDescription>Face off against quirky AI powered trolls of various kinds!</CardDescription>
             </CardHeader>
           </Card>
         </Link>
