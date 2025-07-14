@@ -65,7 +65,7 @@ export default function TrollBattleHome() {
           text-xl drop-shadow-md
           cursor-pointer
         "
-        onClick={() => router.push('/troll-battle/bridgekeeper')}
+        onClick={() => router.push('/troll-battle-simulator/trolls/bridgekeeper')}
         aria-label="Start the troll battle"
       >
         ⚔️ Battle
