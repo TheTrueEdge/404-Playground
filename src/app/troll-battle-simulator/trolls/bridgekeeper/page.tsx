@@ -26,6 +26,23 @@ export default function BridgekeeperBattle() {
   const MAX_TURNS = 10;
   const scrollRef = useRef<HTMLDivElement>(null);
 
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [scrollWidth, setScrollWidth] = useState<number>(0);
+
+  useEffect(() => {
+    if (!scrollContainerRef.current) return;
+  
+      const observer = new ResizeObserver((entries) => {
+        for (const entry of entries) {
+          setScrollWidth(entry.contentRect.width);
+        }
+      });
+  
+      observer.observe(scrollContainerRef.current);
+  
+      return () => observer.disconnect();
+    }, []);
+
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
@@ -127,44 +144,40 @@ export default function BridgekeeperBattle() {
     >
       <MenuButton />
       <MobileMenu />
-
       <div
-        className="w-full md:w-1/3 max-w-full min-w-[400px] p-1
-          bg-[#6d6f50] flex flex-col items-center justify-center h-full relative"
+        className="w-full max-w-xl md:max-w-xl p-1 pt-0 bg-[#6d6f50] flex flex-col items-center justify-center h-full relative"
       >
-        {/* Desktop HUD */}
-        <div className="absolute bottom-10 center z-10 hidden md:flex gap-2">
-          <button
-            onClick={handleReturnHome}
-            className="w-32 px-4 py-2 bg-yellow-600 text-[#3e2f0c] rounded font-bold hover:bg-yellow-500 transition"
-          >
-            🏠 Exit
-          </button>
-          <button
-            onClick={() => alert('💡 Hint: He is *very* particular about names and quests!')}
-            className="w-32 px-4 py-2 bg-yellow-600 text-[#3e2f0c] rounded font-bold hover:bg-yellow-500 transition"
-          >
-            💡 Hint
-          </button>
-          <button
-            onClick={handleRetry}
-            className="w-32 px-4 py-2 bg-yellow-600 text-[#3e2f0c] rounded font-bold hover:bg-yellow-500 transition"
-          >
-            🔄 Restart
-          </button>
-        </div>
-
         <div
-          className="relative w-full h-full max-w-xl p-6 pt-14 text-center
+          className="relative w-full h-full max-w-xl p-9 pt-8 text-center
             bg-[url('/scroll-bg.png')] bg-no-repeat bg-contain bg-center flex flex-col"
           style={{ backgroundSize: '100% 100%' }}
+          ref={scrollContainerRef}
         >
-          <h1 className="font-bold mb-4 drop-shadow-md text-red-900 select-none whitespace-nowrap text-center text-2xl md:text-3xl">
+          {/* Title and Subtitle */}
+          <h1
+            className="mb-0 mt-0 font-bold text-red-900 select-none drop-shadow-md text-center leading-tight"
+            style={{
+              fontSize: `${Math.max(18, Math.min(scrollWidth / 12, 36))}px`, // scale between 18px–36px
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+            }}
+          >
             Bridgekeeper Battle
           </h1>
+          <h2 
+            className="mb-3 font-bold italic text-gray-600 dark:text-gray-300 select-none drop-shadow-sm text-center"
+            style={{
+              fontSize: `${Math.max(6, Math.min(scrollWidth / 24, 16))}px`, // scale between 18px–36px
+              whiteSpace: 'nowrap',
+            }}
+          >
+            From Monty Python and the Holy Grail
+          </h2>
 
+          {/* Messages Container */}
           <div
-            className={`flex-grow overflow-y-auto border border-yellow-700 bg-[#fff8dccc] p-6 rounded-lg shadow
+            className={`flex-1 overflow-y-auto border border-yellow-700 bg-[#fff8dccc] p-6 rounded-lg shadow
               space-y-3 text-left ${isLost ? 'opacity-50 pointer-events-none select-none' : ''}`}
           >
             {messages.map((msg, idx) => (
@@ -173,7 +186,8 @@ export default function BridgekeeperBattle() {
             <div ref={scrollRef} />
           </div>
 
-          <div className="flex gap-2 mt-4">
+          {/* User Input and Send Button */}
+          <div className="flex gap-2 mt-3">
             <input
               className="flex-1 p-3 rounded bg-[#f7f0d9] border border-yellow-700 text-[#3e2f0c]
                 placeholder:text-[#a68f36] focus:outline-none focus:ring-2 focus:ring-yellow-600"
@@ -193,6 +207,43 @@ export default function BridgekeeperBattle() {
               disabled={isLoading || isGameOver}
             >
               {isLoading ? '...' : 'Send'}
+            </button>
+          </div>
+
+          {/* Desktop Menu Buttons */}
+          <div className="hidden md:flex justify-center gap-2 mt-10">
+            <button
+              onClick={handleReturnHome}
+              className="
+                w-32 h-9 px-4 flex items-center justify-center gap-1
+              bg-[#5c4a1a] hover:bg-[#766338] text-[#dcd6b8]
+                rounded text-sm font-semibold whitespace-nowrap truncate
+                transition-colors duration-200 shadow-sm
+              "
+            >
+              🏠 Exit
+            </button>
+            <button
+              onClick={() => alert('💡 Hint: He is *very* particular about names and quests!')}
+              className="
+                w-32 h-9 px-4 flex items-center justify-center gap-1
+              bg-[#5c4a1a] hover:bg-[#766338] text-[#dcd6b8]
+                rounded text-sm font-semibold whitespace-nowrap truncate
+                transition-colors duration-200 shadow-sm
+              "
+            >
+              💡 Hint
+            </button>
+            <button
+              onClick={handleRetry}
+              className="
+                w-32 h-9 px-4 flex items-center justify-center gap-1
+              bg-[#5c4a1a] hover:bg-[#766338] text-[#dcd6b8]
+                rounded text-sm font-semibold whitespace-nowrap truncate
+                transition-colors duration-200 shadow-sm
+              "
+            >
+              🔄 Restart
             </button>
           </div>
 
