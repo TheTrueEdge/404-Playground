@@ -4,6 +4,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Uncial_Antiqua } from 'next/font/google';
 import { motion, AnimatePresence } from 'framer-motion';
+import { HintModal } from '../../components/HintModal';
+
 
 const uncial = Uncial_Antiqua({ subsets: ['latin'], weight: '400' });
 
@@ -223,17 +225,22 @@ export default function BridgekeeperBattle() {
             >
               🏠 Exit
             </button>
-            <button
-              onClick={() => alert('💡 Hint: He is *very* particular about names and quests!')}
-              className="
-                w-32 h-9 px-4 flex items-center justify-center gap-1
-              bg-[#5c4a1a] hover:bg-[#766338] text-[#dcd6b8]
-                rounded text-sm font-semibold whitespace-nowrap truncate
-                transition-colors duration-200 shadow-sm
-              "
-            >
-              💡 Hint
-            </button>
+            <HintModal
+              hints={[
+                "You may want to watch the movie for inspiration! or at least the bridgekeeper scene!",
+                "Give him reasonable answers for the first two questions.",
+                "If you are struggling with the third question, you may need to ask him a clarifying question..."
+              ]}
+              title="Bridgekeeper's Hints"
+              triggerText="💡 Hint"
+              className="w-32 h-9 px-4 flex items-center justify-center gap-1
+            bg-[#5c4a1a] hover:bg-[#766338] text-[#dcd6b8]
+              rounded text-sm font-semibold whitespace-nowrap truncate
+              transition-colors shadow-sm"
+              contentClassName="bg-[#fef9e7] border border-[#5c4a1a] text-[#3e2f0c] rounded-xl p-6 shadow-xl font-serif"
+              hintButtonClassName="w-32 h-9 px-21 flex items-center justify-center gap-1 bg-[#5c4a1a] hover:bg-[#766338] text-[#dcd6b8] rounded text-sm font-semibold transition-colors duration-200 shadow-sm"
+              hintBoxClassName="mt-2 p-3 rounded-lg bg-[#fff8dc] text-[#3e2f0c] border border-[#e0c97f] font-medium"
+            />
             <button
               onClick={handleRetry}
               className="

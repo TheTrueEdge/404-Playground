@@ -125,3 +125,13 @@
   font-family: 'Courier New', monospace;
   text-shadow: 2px 0 hotpink, -2px 0 cyan;
 }
+
+button:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+button:focus-visible {
+  outline: 2px solid #f59e0b; /* amber-400 or your custom focus color */
+  box-shadow: 0 0 0 2px #fbbf24; /* amber-300 shadow */
+}
