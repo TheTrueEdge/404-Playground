@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { Uncial_Antiqua } from 'next/font/google';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HintModal } from '../../components/HintModal';
+//import { VictoryPopup } from '../../components/VictoryModal';
+import { ExitConfirmModal } from '../../components/ExitConfirmModal';
 
 
 const uncial = Uncial_Antiqua({ subsets: ['latin'], weight: '400' });
@@ -214,17 +216,17 @@ export default function BridgekeeperBattle() {
 
           {/* Desktop Menu Buttons */}
           <div className="hidden md:flex justify-center gap-2 mt-10">
-            <button
-              onClick={handleReturnHome}
-              className="
-                w-32 h-9 px-4 flex items-center justify-center gap-1
-              bg-[#5c4a1a] hover:bg-[#766338] text-[#dcd6b8]
+            <ExitConfirmModal
+              onConfirm={handleReturnHome}
+              triggerText="🏠 Exit"
+              className="w-32 h-9 px-4 flex items-center justify-center gap-1
+                bg-[#5c4a1a] hover:bg-[#766338] text-[#dcd6b8]
                 rounded text-sm font-semibold whitespace-nowrap truncate
-                transition-colors duration-200 shadow-sm
-              "
-            >
-              🏠 Exit
-            </button>
+                transition-colors shadow-sm"
+              contentClassName="bg-[#fef9e7] border border-[#5c4a1a] text-[#3e2f0c] rounded-xl p-6 shadow-xl font-serif"
+              confirmButtonClassName="bg-red-700 hover:bg-red-800 text-white"
+              cancelButtonClassName="bg-gray-300 hover:bg-gray-400 text-black"
+            />
             <HintModal
               hints={[
                 "You may want to watch the movie for inspiration! or at least the bridgekeeper scene!",
