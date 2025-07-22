@@ -23,8 +23,8 @@ interface ExitConfirmModalProps {
 
 export function ExitConfirmModal({
   onConfirm,
-  triggerText = "🏠 Exit",
-  title = "🏠 Exit",
+  triggerText = "Exit Battle",
+  title = "🏠 Return Home",
   message = "Are you sure you want to leave? Your progress will be lost.",
   className = "",
   contentClassName = "",
@@ -48,17 +48,17 @@ export function ExitConfirmModal({
         <p className="mb-4 text-lg">{message}</p>
         <div className="flex justify-center gap-4">
           <Button
+            className={`w-40 ${confirmButtonClassName}`}
+            onClick={handleConfirm}
+          >
+            Exit Battle
+          </Button>
+           <Button
             variant="outline"
             className={`w-40 ${cancelButtonClassName}`}
             onClick={() => setOpen(false)}
           >
             Cancel
-          </Button>
-          <Button
-            className={`w-40 ${confirmButtonClassName}`}
-            onClick={handleConfirm}
-          >
-            Exit
           </Button>
         </div>
       </DialogContent>

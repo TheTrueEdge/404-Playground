@@ -65,7 +65,7 @@ export function HintModal({
                   className={`whitespace-nowrap ${hintButtonClassName}`}
                   onClick={() => revealHint(index)}
                 >
-                  Reveal Hint {index + 1}
+                  💡 Reveal Hint {index + 1}
                 </Button>
               )}
             </div>

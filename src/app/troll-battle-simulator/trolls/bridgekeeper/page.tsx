@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Uncial_Antiqua } from 'next/font/google';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HintModal } from '../../components/HintModal';
-//import { VictoryPopup } from '../../components/VictoryModal';
+import { EndBattlePopup } from '../../components/EndBattlePopup';
 import { ExitConfirmModal } from '../../components/ExitConfirmModal';
 import { IntroPopup } from '../../components/IntroPopup';
 
@@ -29,6 +29,14 @@ export default function BridgekeeperBattle() {
   const [isGameOver, setIsGameOver] = useState(false);
   const [isLost, setIsLost] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+
+  const [finalTrollMessage, setFinalTrollMessage] = useState<string>('');
+  const [showVictoryPopup, setShowVictoryPopup] = useState(false);
+  const [didWin, setDidWin] = useState<boolean | null>(null);
+
+  const [hintResetKey, setHintResetKey] = useState(0);
+
+
 
   const MAX_TURNS = 10;
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -62,18 +70,6 @@ export default function BridgekeeperBattle() {
     scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  const checkGameOver = (reply: string) => {
-    const lower = reply.toLowerCase();
-    if (
-      lower.includes('gorge') ||
-      lower.includes('cast into the gorge') ||
-      lower.includes('you have failed')
-    ) {
-      setIsLost(true);
-      setIsGameOver(true);
-    }
-  };
-
   const handleSend = async () => {
     if (!input.trim() || isLoading || isGameOver) return;
 
@@ -91,10 +87,28 @@ export default function BridgekeeperBattle() {
       });
 
       const data = await res.json();
-      const reply = typeof data.message === 'string' ? data.message.trim() : '...';
+      let reply = typeof data.message === 'string' ? data.message.trim() : '...';
+
+      let didWinLocal = false;
+      let didLoseLocal = false;
+
+      if (reply.includes('WIN')) {
+        didWinLocal = true;
+        reply = reply.replace('WIN', '').trim();
+      } else if (reply.includes('LOSE')) {
+        didLoseLocal = true;
+        reply = reply.replace('LOSE', '').trim();
+      }
 
       setMessages((prev) => [...prev, `🧌 Bridgekeeper: ${reply}`]);
-      checkGameOver(reply);
+
+      if (didWinLocal || didLoseLocal) {
+        setIsGameOver(true);
+        setIsLost(didLoseLocal);
+        setFinalTrollMessage(reply);
+        setDidWin(didWinLocal);
+        setShowVictoryPopup(true);
+      }
     } catch {
       setMessages((prev) => [...prev, '❌ Troll is silent... Something went wrong.']);
     } finally {
@@ -102,17 +116,26 @@ export default function BridgekeeperBattle() {
       if (turnCount + 1 >= MAX_TURNS && !isGameOver) {
         setIsGameOver(true);
         setIsLost(true);
-        setMessages((prev) => [...prev, '🪦 You have failed the challenge. The troll casts you into the gorge!']);
+        setFinalTrollMessage('🪦 You have failed the challenge. The troll casts you into the gorge!');
+        setDidWin(false);
+        setShowVictoryPopup(true);
       }
     }
   };
+
+
 
   const handleRetry = () => {
     setMessages(initialMessages);
     setInput('');
     setTurnCount(0);
+    setIsLoading(false);
     setIsGameOver(false);
     setIsLost(false);
+    setFinalTrollMessage('');
+    setShowVictoryPopup(false);
+    setDidWin(null);
+    setHintResetKey((prev) => prev + 1);
   };
 
   const handleReturnHome = () => {
@@ -252,7 +275,7 @@ export default function BridgekeeperBattle() {
               <div className="hidden md:flex justify-center gap-2 mt-10">
                 <ExitConfirmModal
                   onConfirm={handleReturnHome}
-                  triggerText="🏠 Exit"
+                  triggerText="🏠 Home"
                   className="w-32 h-9 px-4 flex items-center justify-center gap-1
                     bg-[#5c4a1a] hover:bg-[#766338] text-[#dcd6b8]
                     rounded text-sm font-semibold whitespace-nowrap truncate
@@ -262,6 +285,7 @@ export default function BridgekeeperBattle() {
                   cancelButtonClassName="bg-gray-300 hover:bg-gray-400 text-black"
                 />
                 <HintModal
+                  key={hintResetKey}
                   hints={[
                     "You may want to watch the movie for inspiration! or at least the bridgekeeper scene!",
                     "Give him reasonable answers for the first two questions.",
@@ -290,29 +314,20 @@ export default function BridgekeeperBattle() {
                 </button>
               </div>
 
-              {isLost && (
-                <div className="mt-4 text-center text-red-700 font-black text-2xl tracking-wide select-none">
-                  ⚠️ You Lose! You were flung into the Gorge of Eternal Peril! ⚠️
-                </div>
+              {showVictoryPopup && (
+                <EndBattlePopup
+                  open={showVictoryPopup}
+                  didWin={didWin}
+                  message={finalTrollMessage}
+                  onClose={() => setShowVictoryPopup(false)}
+                  onRetry={handleRetry}
+                  onReturnHome={handleReturnHome}
+                  onNextBattle={handleReturnHome} // optional
+                  retryButtonClass="bg-yellow-800 hover:bg-yellow-700 text-white px-6 py-3 rounded font-bold shadow"
+                  nextButtonClass="bg-purple-800 hover:bg-purple-700 text-white px-6 py-3 rounded font-bold shadow"
+                  returnButtonClass="bg-black hover:bg-gray-800 text-white px-6 py-3 rounded font-semibold"
+                />
               )}
-
-              {isLost && (
-                <div className="mt-4 flex gap-4 justify-center">
-                  <button
-                    className="px-6 py-3 bg-green-700 rounded hover:bg-green-600 transition font-semibold text-white"
-                    onClick={handleRetry}
-                  >
-                    Retry
-                  </button>
-                  <button
-                    className="px-6 py-3 bg-red-700 rounded hover:bg-red-600 transition font-semibold text-white"
-                    onClick={handleReturnHome}
-                  >
-                    Return Home
-                  </button>
-                </div>
-              )}
-
               <p className="mt-4 text-sm opacity-70 select-none">
                 Turns used: {turnCount}/{MAX_TURNS}
               </p>

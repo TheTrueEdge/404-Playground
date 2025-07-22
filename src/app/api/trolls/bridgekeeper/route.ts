@@ -31,7 +31,10 @@ Rules:
 
 If they fail any question, immediately declare their failure and throw them into the gorge.
 
-Respond in character at all times. No modern slang. No explanations. No pleasantries.`
+Respond in character at all times. No modern slang. No explanations. No pleasantries.
+
+If the Player wins then fling yourself into the Gorge of Eternal Peril like the movie, if the player loses, fling them into the Gorgle like the movie.
+⚠️ IMPORTANT: At the end of your response, append either "WIN" if the user has won the challenge, or "LOSE" if they have failed.`
 },
     ...messages.map((msg: string) => {
       if (msg.startsWith('🧍 You:')) {
